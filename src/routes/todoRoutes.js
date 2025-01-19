@@ -5,9 +5,17 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 /**
+ * @typedef {object} Exercise
+ * @property {string} exerciseType.required - Jenis Gerakan (e.g., Squat, Bench Press)
+ * @property {number} weight.required - Berat dalam kilogram
+ * @property {number} sets.required - Jumlah Set
+ */
+
+/**
  * @typedef {object} TodoRequest
- * @property {string} title.required - Title
- * @property {string} description - Description
+ * @property {string} day.required - Hari (e.g., Senin)
+ * @property {array.<Exercise>} exercises.required - Daftar Gerakan
+ * @property {boolean} [completed] - Status penyelesaian
  */
 
 /**
@@ -16,6 +24,7 @@ const router = express.Router();
  * @tags Todos
  * @param {TodoRequest} request.body.required - Todo info
  * @return {object} 201 - Todo created successfully
+ * @return {object} 400 - Validation error
  * @return {object} 500 - Server error
  */
 router.post('/', authMiddleware, TodoController.createTodo);
@@ -35,6 +44,7 @@ router.get('/', authMiddleware, TodoController.getTodos);
  * @tags Todos
  * @param {string} id.path.required - Todo ID
  * @return {object} 200 - Todo data
+ * @return {object} 400 - Invalid ID
  * @return {object} 404 - Todo not found
  * @return {object} 500 - Server error
  */
@@ -47,6 +57,7 @@ router.get('/:id', authMiddleware, TodoController.getTodoById);
  * @param {string} id.path.required - Todo ID
  * @param {TodoRequest} request.body.required - Todo info
  * @return {object} 200 - Todo updated successfully
+ * @return {object} 400 - Validation error atau Invalid ID
  * @return {object} 404 - Todo not found
  * @return {object} 500 - Server error
  */
@@ -58,6 +69,7 @@ router.put('/:id', authMiddleware, TodoController.updateTodoById);
  * @tags Todos
  * @param {string} id.path.required - Todo ID
  * @return {object} 200 - Todo deleted successfully
+ * @return {object} 400 - Invalid ID
  * @return {object} 404 - Todo not found
  * @return {object} 500 - Server error
  */

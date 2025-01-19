@@ -8,17 +8,20 @@ const options = {
   },
   baseDir: __dirname,
   filesPattern: './routes/*.js',
-  swaggerUIPath: '/',
+  swaggerUIPath: '/api-docs', // Diubah dari '/' ke '/api-docs' untuk menghindari konflik
   exposeSwaggerUI: true,
   exposeApiDocs: false,
   apiDocsPath: '/v3/api-docs',
   notRequiredAsNullable: false,
   swaggerUiOptions: {},
-  multiple: true,
+  multiple: false, // Diubah ke false jika hanya ada satu set dokumentasi
 };
 
 const setupSwagger = (app) => {
-  expressJSDocSwagger(app)(options);
+  // Hanya mengatur Swagger jika berada di lingkungan pengembangan
+  if (process.env.NODE_ENV === 'development') {
+    expressJSDocSwagger(app)(options);
+  }
 };
 
 module.exports = setupSwagger;
